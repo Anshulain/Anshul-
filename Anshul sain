@@ -1,0 +1,162 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complaint Form</title>
+  <style>
+    /* Add some basic styles if needed */
+    .HOME {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .input, .Codeyogi, .textarea, .button {
+      margin: 5px 0;
+      padding: 8px;
+      font-size: 16px;
+      width: 100%;
+    }
+    .p {
+      margin: 10px;
+     margin-left: 150px;
+    }
+    .paragraph {
+      margin:10px;
+      margin-left: 80px;
+    }
+    .common {
+      margin: auto;
+      margin-left: 150px;
+    }
+    .button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #0056b3;
+    }
+    .div img {
+      max-width: 50px;
+      margin: auto;
+      margin-left: 298px; 
+    }
+    .xyz {
+      height: 150px;
+      width: 150px;
+      margin: auto ;
+      margin-left: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div id="firstpage">
+    <div id="header">
+      <p class="HOME">HOME</p>
+    </div>
+
+    <img class="xyz" src="https://cdn-icons-png.flaticon.com/512/1484/1484573.png" alt="Icon" />
+
+    <input id="xyz" class="input" type="search" placeholder="अपनी शिकायत ID लिखे" />
+
+    <button class="common" onclick="show()">🔍</button>
+
+    <p class="p">या फिर</p>
+
+    <p class="paragraph">नयीं शिकायत दर्ज करने के लिए</p>
+
+    <form onsubmit="return createNew(event)" class="topper">
+      <p>ब्लॉक</p>
+
+      <select name="block" class="Codeyogi">
+        <option selected disabled>Option chunna</option>
+        <option>सहारनपुर</option>
+        <option>देवबंद</option>
+        <option>शामलि</option>
+        <option>अलीगढ़</option>
+        <option>मुजफ्फरनगर</option>
+        <option>मेरठ</option>
+        <option>केराना</option>
+        <option>थाना भवन</option>
+      </select>
+
+      <input name="name" class="Codeyogi" type="text" placeholder="अपना नाम भरे " />
+
+      <input name="phoneNumber" class="Codeyogi" type="number" placeholder="फोन नंबर" />
+
+      <p>शिकायत किस डिपार्टमेंट से है</p>
+
+      <select name="selectValue" class="Codeyogi">
+        <option selected disabled>Option chunol</option>
+        <option>पुलिस</option>
+        <option>समाज कल्यान विभाग</option>
+        <option>खाद्य या रसद विभाग</option>
+        <option>श्रम विभाग</option>
+        <option>जल विभाग</option>
+        <option>वायु विभाग</option>
+      </select>
+
+      <textarea name="complainInfo" class="textarea" placeholder="शिकायत लिखे"></textarea>
+
+      <button type="submit" class="button">दर्ज करे</button>
+    </form>
+  </div>
+
+  <div class="div">
+    <p>मदद के लिए कॉल करें</p>
+    <a href="tel:+91 18003456284">
+      <img src="https://cdn-icons-png.flaticon.com/128/5585/5585856.png" alt="Phone Icon" />
+    </a>
+  </div>
+
+  <p id="result"></p>
+
+  <script>
+    function show() {
+      const xyzInputValue = document.getElementById("xyz");
+      const id = xyzInputValue.value;
+      const data = JSON.parse(localStorage.getItem(id));
+      const result = document.getElementById("result");
+
+      if (data) {
+        result.innerHTML = ` ${data.name} आपकी शिकायत पर निम्नलिखित करवाईं हो चुकी है - 
+        सम्बंधित अधिकारी, श्री अमन शर्मा को ३० दिनो मे आपकी समस्या का निवारण करने के निर्देश दे दिये गए है : ${data.complainInfo}`;
+      } else {
+        result.innerHTML = "अभी आपकी शिकायत पर करवाईं होनी बाकी है कृप्या कुछ दिन बाद दोबारा जाच करे।";
+      }
+    }
+
+    function createNew(event) {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData.entries());
+      const id = generateRandomId(5);
+      data.id = id;
+
+      console.log({ data });
+
+      localStorage.setItem(id, JSON.stringify(data));
+
+      const firstPage = document.getElementById('firstpage');
+      const result = document.getElementById('result');
+      firstPage.style.display = "none";
+
+      result.innerHTML = `आपकी शिकायत दर्ज कर ली गई। आपकी ID है: ${id}`;
+    }
+
+    function generateRandomId(length = 10) {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let randomId = '';
+
+      for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        randomId += characters[randomIndex];
+      }
+
+      return randomId;
+    }
+  </script>
+</body>
+</html>
